@@ -972,11 +972,11 @@ function buildPrompt(cfg) {
 
   // 命格融入要求
   if (cfg.minggeA || cfg.minggeB) {
-    parts.push('要求：命格特质必须自然融入故事叙述，不能机械重复命格名称，要让读者感受到命格的性格本质。');
+    parts.push(`要求：命格特质必须自然融入故事叙述，不能机械重复命格名称，要让读者感受到命格的性格本质。`);
   }
 
   if (cfg.minggeA && cfg.minggeB && cfg.minggeA === cfg.minggeB) {
-    parts.push('注意：两人命格相同，故事应体现镜像感——彼此是对方的影子，惺惺相惜中带着难以言说的不安。');
+    parts.push(`注意：两人命格相同，故事应体现镜像感——彼此是对方的影子，惺惺相惜中带着难以言说的不安。`);
   }
 
   parts.push(`写作风格要求：
