@@ -582,6 +582,13 @@ body::after {
       <div class="trigger-cat-hint" id="trigger-cat-hint"></div>
       <div class="trigger-pool" id="trigger-pool"></div>
       <button class="trigger-refresh" onclick="shuffleTriggers()">换一批 ↺</button>
+      <div class="field" style="margin-top:10px">
+        <label>自定义触发词 <span class="optional-badge">选填·最多10字</span></label>
+        <input type="text" id="custom-trigger" maxlength="10" 
+        placeholder="输入你的场景词…"
+        style="width:100%;padding:9px 12px;background:var(--paper2);border:1px solid var(--rule);border-radius:3px;font-family:var(--serif);font-size:13px;color:var(--ink)">
+      </div>
+      
     </div>
 
     <!-- ⑦ 故事基调 -->
@@ -890,6 +897,7 @@ function collectConfig() {
     genderA: getVal('sel-gender-a'),
     genderB: getVal('sel-gender-b'),
     trigger: selectedTrigger || ALL_TRIGGERS[Math.floor(Math.random() * ALL_TRIGGERS.length)],
+    userTrigger: document.getElementById('custom-trigger')?.value?.trim() || null,
     tone: selectedTone,
     tpl: selectedTpl,
   };
@@ -1087,7 +1095,7 @@ async function startGenerate() {
     renderResult(story, lastConfig);
     showScreen('result');
   } catch (e) {
-    alert('生成失败：' + e.message);
+    alert(e.message.includes('不允许') ? '呀咩咯！触发词包含不允许的内容，请修改后重试：（' : '生成失败：' + e.message);
     showScreen('config');
   }
 }
@@ -1096,7 +1104,7 @@ async function callClaude(prompt) {
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
+    body: JSON.stringify({ prompt, userTrigger: lastConfig.userTrigger }),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
