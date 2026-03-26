@@ -66,7 +66,7 @@ export default async (request) => {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt },
         ],
-        max_tokens: 3000,
+        max_tokens: 1000,
         temperature: 0.8,
       }),
     });
