@@ -21,7 +21,7 @@ export default async (request) => {
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [{ role: 'user', content: prompt }],
-          max_tokens: 1000,
+          max_tokens: 2000,
         }),
       }
     );
