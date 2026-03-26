@@ -5,8 +5,3 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-
-[[redirects]]
-  from = "/.netlify/functions/generate"
-  to = "/.netlify/functions/generate"
-  status = 200
