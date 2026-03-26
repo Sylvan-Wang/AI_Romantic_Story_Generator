@@ -887,6 +887,8 @@ function collectConfig() {
     classB: getVal('sel-class-b'),
     jobB: getVal('sel-job-b'),
     relType: getVal('sel-rel-type'),
+    genderA: getVal('sel-gender-a'),
+    genderB: getVal('sel-gender-b'),
     trigger: selectedTrigger || ALL_TRIGGERS[Math.floor(Math.random() * ALL_TRIGGERS.length)],
     tone: selectedTone,
     tpl: selectedTpl,
@@ -898,6 +900,29 @@ function collectConfig() {
 // ══════════════════════════════
 function buildPrompt(cfg) {
   const parts = [];
+
+  // 从关系类型推断默认性别
+  if (cfg.relType === '耽美') {
+    cfg.genderA = cfg.genderA || '男';
+    cfg.genderB = cfg.genderB || '男';
+  } else if (cfg.relType === '百合') {
+    cfg.genderA = cfg.genderA || '女';
+    cfg.genderB = cfg.genderB || '女';
+  }
+
+  // 角色称呼
+  const pronounA = cfg.genderA === '男' ? '（他）' : cfg.genderA === '女' ? '（她）' : '';
+  const pronounB = cfg.genderB === '男' ? '（他）' : cfg.genderB === '女' ? '（她）' : '';
+  const nameA = cfg.minggeA ? `${cfg.minggeA}${pronounA}`
+              : cfg.jobA ? `${cfg.jobA}${pronounA}`
+              : cfg.genderA === '男' ? '他'
+              : cfg.genderA === '女' ? '她'
+              : '对方';
+  const nameB = cfg.minggeB ? `${cfg.minggeB}${pronounB}`
+              : cfg.jobB ? `${cfg.jobB}${pronounB}`
+              : cfg.genderB === '男' ? '他'
+              : cfg.genderB === '女' ? '她'
+              : '对方';
 
   // 角色A描述
   let descA = '角色A';
