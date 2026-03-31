@@ -1041,7 +1041,11 @@ function buildTags(cfg) {
   else if (cfg.minggeB) tags.push(cfg.minggeB);
   if (cfg.rel) tags.push(cfg.rel);
   if (cfg.relType) tags.push(cfg.relType);
-  if (cfg.jobA && cfg.jobB) tags.push(`${cfg.jobA} × ${cfg.jobB}`);
+  const displayJobA = cfg.jobA || '';
+  const displayJobB = cfg.jobB || '';
+  if (displayJobA && displayJobB) tags.push(`${displayJobA} × ${displayJobB}`);
+  else if (displayJobA) tags.push(displayJobA);
+  else if (displayJobB) tags.push(displayJobB);
   if (cfg.trigger) tags.push(cfg.trigger);
   return tags;
 }
@@ -1159,8 +1163,13 @@ function renderResult(story, cfg) {
   // QR code
   setTimeout(() => {
     const qrEl = document.getElementById('qr-container');
-    if (qrEl) {
-      qrEl.innerHTML = `<img src="https://https://raw.githubusercontent.com/Sylvan-Wang/AI_Romantic_Story_Generator/main/qrcode.png" style="width:40px;height:40px;border-radius:2px;">`;
+    if (qrEl && typeof QRCode !== 'undefined') {
+      new QRCode(qrEl, {
+        text: 'https://romancegenerator.org',
+        width: 40, height: 40,
+        colorDark: cfg.tpl === 'plain' ? '#444444' : cfg.tpl === 'dark' ? '#2a3a55' : '#8a7860',
+        colorLight: cfg.tpl === 'plain' ? '#0f0f0f' : cfg.tpl === 'dark' ? '#080c12' : '#faf8f2',
+      });
     }
   }, 100);
 }
