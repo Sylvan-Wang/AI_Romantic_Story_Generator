@@ -7,7 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
 /* ─── Reset & Base ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -1040,11 +1041,7 @@ function buildTags(cfg) {
   else if (cfg.minggeB) tags.push(cfg.minggeB);
   if (cfg.rel) tags.push(cfg.rel);
   if (cfg.relType) tags.push(cfg.relType);
-  const displayJobA = cfg.jobA || '';
-  const displayJobB = cfg.jobB || '';
-  if (displayJobA && displayJobB) tags.push(`${displayJobA} × ${displayJobB}`);
-  else if (displayJobA) tags.push(displayJobA);
-  else if (displayJobB) tags.push(displayJobB);
+  if (cfg.jobA && cfg.jobB) tags.push(`${cfg.jobA} × ${cfg.jobB}`);
   if (cfg.trigger) tags.push(cfg.trigger);
   return tags;
 }
@@ -1159,10 +1156,11 @@ function renderResult(story, cfg) {
     }
   }
 
-  // QR code-delete
-  
-}
-        `;
+  // QR code
+  setTimeout(() => {
+    const qrEl = document.getElementById('qr-container');
+    if (qrEl) {
+      qrEl.innerHTML = `<img src="https://raw.githubusercontent.com/Sylvan-Wang/AI_Romantic_Story_Generator/main/http___romancegenerator.org.png" style="width:40px;height:40px;border-radius:2px;">`;
     }
   }, 100);
 }
