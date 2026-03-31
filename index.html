@@ -534,6 +534,9 @@ body::after {
               <option>运动员</option><option>厨师</option><option>设计师</option>
               <option>音乐人</option>
             </select>
+            <input type="text" id="custom-job-a" maxlength="15" 
+              placeholder="或自定义，如：外星人、奥特曼…"
+              style="width:100%;margin-top:6px;padding:9px 12px;background:var(--paper2);border:1px solid var(--rule);border-radius:3px;font-family:var(--serif);font-size:13px;color:var(--ink)">
           </div>
         </div>
         <div>
@@ -555,6 +558,9 @@ body::after {
               <option>运动员</option><option>厨师</option><option>设计师</option>
               <option>音乐人</option>
             </select>
+            <input type="text" id="custom-job-b" maxlength="15" 
+              placeholder="或自定义，如：外星人、奥特曼…"
+              style="width:100%;margin-top:6px;padding:9px 12px;background:var(--paper2);border:1px solid var(--rule);border-radius:3px;font-family:var(--serif);font-size:13px;color:var(--ink)">
           </div>
         </div>
       </div>
@@ -563,7 +569,7 @@ body::after {
     <!-- ⑤ 关系类型 -->
     <div class="sec-block">
       <div class="sec-label">⑤ 关系类型 <span class="optional-badge" style="color:var(--rouge)">建议选</span></div>
-      <div class="field">
+      
         <select id="sel-rel-type">
           <option value="异性恋">异性恋</option>
           <option value="耽美">耽美（♂ × ♂）</option>
@@ -783,7 +789,7 @@ function renderSystemPanels() {
     const list = currentSystem === 'tiangan' ? TIANGAN : currentSystem === 'mbti' ? MBTI_LIST : XINGZUO;
     opts = `<option value="">— 不选 —</option>` + list.map(v => `<option>${v}</option>`).join('');
     const label = currentSystem === 'tiangan' ? '天干' : currentSystem === 'mbti' ? 'MBTI' : '星座';
-    panel.innerHTML = `<div class="field"><label>${label}</label><select id="sel-mingge-${role}">${opts}</select></div>`;
+    panel.innerHTML = `<label>${label}</label><select id="sel-mingge-${role}">${opts}</select></div>`;
   });
 }
 
@@ -890,9 +896,9 @@ function collectConfig() {
     familyA: getVal('sel-family-a'),
     familyB: getVal('sel-family-b'),
     classA: getVal('sel-class-a'),
-    jobA: getVal('sel-job-a'),
+    jobA: document.getElementById('custom-job-a')?.value?.trim() || getVal('sel-job-a'),jobA: getVal('sel-job-a'),
     classB: getVal('sel-class-b'),
-    jobB: getVal('sel-job-b'),
+    jobB: document.getElementById('custom-job-b')?.value?.trim() || getVal('sel-job-b'),
     relType: getVal('sel-rel-type'),
     genderA: getVal('sel-gender-a'),
     genderB: getVal('sel-gender-b'),
@@ -933,14 +939,14 @@ function buildPrompt(cfg) {
               : '对方';
 
   // 角色A描述
-  let descA = '角色A';
+  let descA = cfg.genderA === '男' ? '男性角色A' : cfg.genderA === '女' ? '女性角色A' : '角色A';
   if (cfg.minggeA) descA += `（${cfg.minggeA}）`;
   if (cfg.classA) descA += `，${cfg.classA}`;
   if (cfg.jobA) descA += `${cfg.jobA}`;
   if (cfg.familyA) descA += `，${cfg.familyA}`;
 
   // 角色B描述
-  let descB = '角色B';
+  let descB = cfg.genderB === '男' ? '男性角色B' : cfg.genderB === '女' ? '女性角色B' : '角色B';
   if (cfg.minggeB) descB += `（${cfg.minggeB}）`;
   if (cfg.classB) descB += `，${cfg.classB}`;
   if (cfg.jobB) descB += `${cfg.jobB}`;
@@ -969,7 +975,11 @@ function buildPrompt(cfg) {
     '虐文': '故事基调：虐文，允许BE。可以有失去感、牺牲、永别。情感必须真实撕裂，不能煽情，要克制地痛。最后一句话要有分量。',
   };
   parts.push(toneInstructions[cfg.tone]);
-
+  if (cfg.genderA || cfg.genderB) {
+  const gA = cfg.genderA === '男' ? '男性' : cfg.genderA === '女' ? '女性' : '性别不限';
+  const gB = cfg.genderB === '男' ? '男性' : cfg.genderB === '女' ? '女性' : '性别不限';
+  parts.push(`【性别锁定，不可更改】角色A是${gA}，角色B是${gB}。无论任何情况，故事中不得改变两个角色的性别设定。`);
+  }
   // 命格融入要求
   if (cfg.minggeA || cfg.minggeB) {
     parts.push(`要求：命格特质必须自然融入故事叙述，不能机械重复命格名称，要让读者感受到命格的性格本质。`);
