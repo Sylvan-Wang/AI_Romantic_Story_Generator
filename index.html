@@ -1161,13 +1161,8 @@ function renderResult(story, cfg) {
   setTimeout(() => {
     const qrEl = document.getElementById('qr-container');
     if (qrEl) {
-      // 1. 确保文件名与你仓库里的一致
-      // 2. 在链接末尾加上 ?v=1 这种随机数，强行让浏览器下载最新上传的图
-      const qrImageUrl = "https://raw.githubusercontent.com/Sylvan-Wang/AI_Romantic_Story_Generator/main/qrcode.png?v=" + Date.now();
-      
-      qrEl.innerHTML = `<img src="${qrImageUrl}" 
-                             style="width:40px;height:40px;border-radius:2px;display:block;" 
-                             onerror="this.style.display='none';this.parentElement.innerText='扫码阅读'">`;
+      // 抛弃所有复杂 URL，直接引用同级目录下的图片
+      qrEl.innerHTML = `<img src="qrcode.png" style="width:40px;height:40px;display:block;">`;
     }
   }, 100);
 // ══════════════════════════════
