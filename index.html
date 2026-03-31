@@ -1162,13 +1162,14 @@ function renderResult(story, cfg) {
   // QR code
   setTimeout(() => {
     const qrEl = document.getElementById('qr-container');
-    if (qrEl && typeof QRCode !== 'undefined') {
-      new QRCode(qrEl, {
-        text: 'https://romancegenerator.org',
-        width: 40, height: 40,
-        colorDark: cfg.tpl === 'plain' ? '#444444' : cfg.tpl === 'dark' ? '#2a3a55' : '#8a7860',
-        colorLight: cfg.tpl === 'plain' ? '#0f0f0f' : cfg.tpl === 'dark' ? '#080c12' : '#faf8f2',
-      });
+    if (qrEl) {
+        // 直接插入 GitHub 中的图片地址，设置固定宽高防止位移
+        // 建议使用 raw 链接确保图片能直接加载
+        qrEl.innerHTML = `
+            <img src="https://raw.githubusercontent.com/Sylvan-Wang/AI_Romantic_Story_Generator/main/http___romancegenerator.org.png" 
+                 style="width: 40px; height: 40px; display: block; border-radius: 2px;"
+                 alt="QR Code">
+        `;
     }
   }, 100);
 }
