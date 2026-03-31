@@ -1164,8 +1164,7 @@ function renderResult(story, cfg) {
     const qrEl = document.getElementById('qr-container');
     if (qrEl) {
       // 必须使用 raw 链接，否则浏览器会因为安全策略或格式问题卡住
-      const qrImageUrl = "https://raw.githubusercontent.com/Sylvan-Wang/AI_Romantic_Story_Generator/main/http___romancegenerator.org.png";
-      
+      const qrImageUrl = "https://raw.githubusercontent.com/Sylvan-Wang/AI_Romantic_Story_Generator/main/qrcode.png";
       qrEl.innerHTML = `<img src="${qrImageUrl}" 
                              style="width:40px;height:40px;border-radius:2px;display:block;" 
                              onerror="this.parentElement.innerHTML='扫码阅读'">`;
