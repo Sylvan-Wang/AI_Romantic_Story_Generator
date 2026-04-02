@@ -1156,15 +1156,20 @@ function renderResult(story, cfg) {
     }
   }
 
-  // QR code-delete
   // QR code
   setTimeout(() => {
     const qrEl = document.getElementById('qr-container');
-    if (qrEl) {
-      // 抛弃所有复杂 URL，直接引用同级目录下的图片
-      qrEl.innerHTML = `<img src="qrcode.png" style="width:40px;height:40px;display:block;">`;
+    if (qrEl && typeof QRCode !== 'undefined') {
+      new QRCode(qrEl, {
+        text: 'https://romancegenerator.org',
+        width: 40, height: 40,
+        colorDark: cfg.tpl === 'plain' ? '#444444' : cfg.tpl === 'dark' ? '#2a3a55' : '#8a7860',
+        colorLight: cfg.tpl === 'plain' ? '#0f0f0f' : cfg.tpl === 'dark' ? '#080c12' : '#faf8f2',
+      });
     }
   }, 100);
+}
+
 // ══════════════════════════════
 // SHARE URL
 // ══════════════════════════════
