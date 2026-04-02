@@ -789,7 +789,7 @@ function renderSystemPanels() {
     const list = currentSystem === 'tiangan' ? TIANGAN : currentSystem === 'mbti' ? MBTI_LIST : XINGZUO;
     opts = `<option value="">— 不选 —</option>` + list.map(v => `<option>${v}</option>`).join('');
     const label = currentSystem === 'tiangan' ? '天干' : currentSystem === 'mbti' ? 'MBTI' : '星座';
-    panel.innerHTML = `<label>${label}</label><select id="sel-mingge-${role}">${opts}</select></div>`;
+    panel.innerHTML = `<div class="field"><label>${label}</label><select id="sel-mingge-${role}">${opts}</select></div>`;
   });
 }
 
